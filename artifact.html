@@ -489,6 +489,66 @@
   .step-done { align-items: flex-start; justify-content: center; }
   .step-done h3 { font-size: 1.6rem; }
 
+  /* constructor */
+  .constructor .container {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 60px;
+    align-items: center;
+  }
+
+  .preview-stage {
+    perspective: 1200px;
+    height: 340px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .preview-fan {
+    display: flex;
+    gap: 14px;
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease-out;
+  }
+
+  .nail-shape {
+    width: 64px;
+    height: 168px;
+    background: linear-gradient(160deg, #dba98d, #a9684f);
+    box-shadow: 0 20px 34px var(--shadow), inset 0 2px 6px rgba(255,255,255,0.4);
+    transition: clip-path 0.4s ease, border-radius 0.4s ease, background 0.5s ease;
+    clip-path: polygon(50% 0%, 88% 12%, 100% 62%, 92% 100%, 8% 100%, 0% 62%, 12% 12%);
+  }
+  .nail-shape:nth-child(1) { transform: translateY(14px) rotate(-6deg); }
+  .nail-shape:nth-child(3) { transform: translateY(14px) rotate(6deg); }
+
+  .preview-fan[data-shape="square"] .nail-shape { clip-path: polygon(12% 0%, 88% 0%, 100% 100%, 0% 100%); border-radius: 4px; }
+  .preview-fan[data-shape="round"] .nail-shape { clip-path: none; border-radius: 50% 50% 18% 18% / 62% 62% 12% 12%; }
+  .preview-fan[data-shape="stiletto"] .nail-shape { clip-path: polygon(50% 0%, 100% 74%, 82% 100%, 18% 100%, 0% 74%); }
+
+  .constructor-controls .field-group { margin-bottom: 26px; }
+  .constructor-controls .field-group h4 { font-size: 0.85rem; letter-spacing: 0.04em; color: var(--text-dim); margin-bottom: 12px; text-transform: uppercase; }
+
+  .swatch-picker { display: flex; flex-wrap: wrap; gap: 12px; }
+
+  .swatch-btn {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    box-shadow: inset 0 2px 5px rgba(255,255,255,0.35);
+    padding: 0;
+  }
+  .swatch-btn.selected { border-color: var(--accent); }
+
+  .design-summary {
+    margin-top: 22px;
+    font-size: 0.95rem;
+    color: var(--text-dim);
+  }
+  .design-summary strong { color: var(--text); }
+
   /* scroll reveal */
   .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
   .reveal.in-view { opacity: 1; transform: translateY(0); }
@@ -503,6 +563,7 @@
   <nav>
     <a href="#services">Услуги</a>
     <a href="#portfolio">Работы</a>
+    <a href="#constructor">Конструктор</a>
     <a href="#masters">Мастера</a>
     <a href="#booking">Запись</a>
     <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">☾</button>
@@ -684,6 +745,48 @@
     </div>
   </section>
 
+  <section class="constructor section" id="constructor">
+    <div class="container">
+      <div class="preview-stage" id="previewStage">
+        <div class="preview-fan" id="previewFan" data-shape="almond">
+          <div class="nail-shape"></div>
+          <div class="nail-shape"></div>
+          <div class="nail-shape"></div>
+        </div>
+      </div>
+      <div class="constructor-controls">
+        <div class="section-head">
+          <span class="eyebrow">Конструктор</span>
+          <h2>Соберите свой дизайн за 10 секунд</h2>
+        </div>
+        <div class="field-group">
+          <h4>Форма</h4>
+          <div class="chip-row" id="shapePicker">
+            <button class="chip-btn selected" data-shape="almond">Миндаль</button>
+            <button class="chip-btn" data-shape="square">Квадрат</button>
+            <button class="chip-btn" data-shape="round">Скруглённый</button>
+            <button class="chip-btn" data-shape="stiletto">Пуант</button>
+          </div>
+        </div>
+        <div class="field-group">
+          <h4>Покрытие</h4>
+          <div class="swatch-picker" id="colorPicker">
+            <button class="swatch-btn selected" data-name="Nude rose" style="background:linear-gradient(160deg,#dba98d,#a9684f);"></button>
+            <button class="swatch-btn" data-name="Молочный омбре" style="background:linear-gradient(165deg,#f6ede2,#d8b99a 70%);"></button>
+            <button class="swatch-btn" data-name="Хром «жидкий металл»" style="background:conic-gradient(from 200deg, #efe6d6, #8a7256, #cbb89a, #efe6d6);"></button>
+            <button class="swatch-btn" data-name="Вишнёвый глянец" style="background:linear-gradient(165deg,#8a2f3d,#2c0d13 75%);"></button>
+            <button class="swatch-btn" data-name="Кофе с молоком" style="background:linear-gradient(155deg,#c9a789,#7a5b41);"></button>
+            <button class="swatch-btn" data-name="Стекло с золотой нитью" style="background:linear-gradient(155deg,#f1e9dc,#a9814f 80%);"></button>
+          </div>
+        </div>
+        <p class="design-summary">Выбрано: <strong id="summaryShape">миндаль</strong>, <strong id="summaryColor">nude rose</strong></p>
+        <div class="hero-actions" style="margin-top:22px;">
+          <a href="#booking" class="btn" id="constructorCta">Записаться с этим дизайном</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="masters section" id="masters">
     <div class="container">
       <div class="section-head">
@@ -755,6 +858,7 @@
         <div class="booking-stage" id="bookingStage">
           <div class="step active" data-step="1">
             <h3>Какую услугу вы выбираете?</h3>
+            <p class="design-summary" id="chosenDesignPill" style="display:none;"></p>
             <div class="chip-row" id="serviceChips">
               <button class="chip-btn" data-value="Классический маникюр">Классический маникюр</button>
               <button class="chip-btn" data-value="Маникюр + гель-лак">Маникюр + гель-лак</button>
@@ -983,9 +1087,57 @@
     });
   })();
 
+  // constructor: shape + color pick with live preview, hands off to booking
+  (function () {
+    const fan = document.getElementById('previewFan');
+    const shapePicker = document.getElementById('shapePicker');
+    const colorPicker = document.getElementById('colorPicker');
+    const summaryShape = document.getElementById('summaryShape');
+    const summaryColor = document.getElementById('summaryColor');
+    const cta = document.getElementById('constructorCta');
+    const pill = document.getElementById('chosenDesignPill');
+
+    shapePicker.addEventListener('click', (e) => {
+      const btn = e.target.closest('.chip-btn');
+      if (!btn) return;
+      shapePicker.querySelectorAll('.chip-btn').forEach((b) => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      fan.dataset.shape = btn.dataset.shape;
+      summaryShape.textContent = btn.textContent.toLowerCase();
+    });
+
+    colorPicker.addEventListener('click', (e) => {
+      const btn = e.target.closest('.swatch-btn');
+      if (!btn) return;
+      colorPicker.querySelectorAll('.swatch-btn').forEach((b) => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      fan.querySelectorAll('.nail-shape').forEach((n) => { n.style.background = btn.style.background; });
+      summaryColor.textContent = btn.dataset.name.toLowerCase();
+    });
+
+    cta.addEventListener('click', () => {
+      pill.textContent = `Ваш дизайн: ${summaryShape.textContent}, ${summaryColor.textContent}`;
+      pill.style.display = 'block';
+    });
+
+    // subtle 3D tilt on the fan, same idea as hero
+    const previewStage = document.getElementById('previewStage');
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      previewStage.addEventListener('mousemove', (e) => {
+        const rect = previewStage.getBoundingClientRect();
+        const px = (e.clientX - rect.left) / rect.width - 0.5;
+        const py = (e.clientY - rect.top) / rect.height - 0.5;
+        fan.style.transform = `rotateX(${(-py * 14).toFixed(2)}deg) rotateY(${(px * 18).toFixed(2)}deg)`;
+      });
+      previewStage.addEventListener('mouseleave', () => {
+        fan.style.transform = 'rotateX(0deg) rotateY(0deg)';
+      });
+    }
+  })();
+
   // scroll reveal
   const revealTargets = document.querySelectorAll(
-    '.section-head, .spec-item, .service-card, .portfolio-card, .master-card, .review-card, .booking-card'
+    '.section-head, .spec-item, .service-card, .portfolio-card, .master-card, .review-card, .booking-card, .constructor-controls, .preview-stage'
   );
   revealTargets.forEach((el) => el.classList.add('reveal'));
   if ('IntersectionObserver' in window) {
