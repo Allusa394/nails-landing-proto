@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ГЛЯНЕЦ — студия маникюра</title>
+<style>
+  :root {
+    --ink: #170f0c;
+    --paper: #f6ede2;
+    --rose: #c98a6b;
+    --rose-soft: #dba98d;
+    --wine: #6d2331;
+    --chrome-a: #e7d9c4;
+    --chrome-b: #8a7256;
+    --gold-line: #a9814f;
+
+    --bg: #150e0b;
+    --bg-raised: #1e1512;
+    --text: #f3e9dc;
+    --text-dim: #cbb9a6;
+    --accent: var(--rose);
+    --accent-2: var(--wine);
+    --line: rgba(243, 233, 220, 0.14);
+    --shadow: rgba(0, 0, 0, 0.55);
+  }
+
+  :root[data-theme="light"] {
+    --bg: #f6ede2;
+    --bg-raised: #fffaf3;
+    --text: #170f0c;
+    --text-dim: #5a4a3d;
+    --accent: var(--wine);
+    --accent-2: var(--rose);
+    --line: rgba(23, 15, 12, 0.12);
+    --shadow: rgba(107, 79, 54, 0.25);
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg: #f6ede2;
+      --bg-raised: #fffaf3;
+      --text: #170f0c;
+      --text-dim: #5a4a3d;
+      --accent: var(--wine);
+      --accent-2: var(--rose);
+      --line: rgba(23, 15, 12, 0.12);
+      --shadow: rgba(107, 79, 54, 0.25);
+    }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Century Gothic", "Futura", "Trebuchet MS", "Segoe UI", sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    transition: background 0.4s ease, color 0.4s ease;
+  }
+
+  h1, h2, h3, .wordmark {
+    font-family: "Bodoni MT", "Didot", "Big Caslon", Georgia, serif;
+    font-weight: 400;
+    text-wrap: balance;
+  }
+
+  a { color: inherit; }
+
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-size: 0.72rem;
+    color: var(--accent);
+  }
+
+  .container {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* header */
+  .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 32px;
+    background: linear-gradient(to bottom, var(--bg) 40%, transparent);
+  }
+
+  .wordmark {
+    font-size: 1.4rem;
+    letter-spacing: 0.06em;
+  }
+
+  .site-header nav {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .site-header nav a {
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    color: var(--text-dim);
+  }
+
+  .theme-toggle {
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--text);
+    border-radius: 999px;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 14px 30px;
+    border-radius: 2px;
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: var(--bg);
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 24px var(--shadow); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text);
+    border-color: var(--line);
+  }
+
+  /* hero */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: center;
+    padding: 140px 32px 80px;
+    position: relative;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(3rem, 7vw, 5.6rem);
+    line-height: 0.98;
+    margin: 18px 0 26px;
+    max-width: 11ch;
+  }
+
+  .hero-copy p {
+    max-width: 46ch;
+    color: var(--text-dim);
+    font-size: 1.05rem;
+    margin-bottom: 34px;
+  }
+
+  .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+
+  .hero-stage {
+    position: relative;
+    height: 460px;
+  }
+
+  footer {
+    padding: 60px 32px 40px;
+    border-top: 1px solid var(--line);
+    color: var(--text-dim);
+    font-size: 0.85rem;
+  }
+
+  footer .foot-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+
+  .demo-badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    border: 1px solid var(--line);
+    padding: 6px 12px;
+    border-radius: 999px;
+  }
+
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: 1fr; padding-top: 120px; }
+    .hero-stage { height: 320px; margin-top: 40px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wordmark">ГЛЯНЕЦ</div>
+  <nav>
+    <a href="#services">Услуги</a>
+    <a href="#portfolio">Работы</a>
+    <a href="#masters">Мастера</a>
+    <a href="#booking">Запись</a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">☾</button>
+  </nav>
+</header>
+
+<main>
+  <section class="hero" id="hero">
+    <div class="hero-copy">
+      <span class="eyebrow">Студия маникюра · Тверская</span>
+      <h1>Маникюр такой, что руки хочется держать напоказ</h1>
+      <p>Гель-лак, наращивание и дизайн любой сложности. Один мастер — один гость: без очереди, без спешки, 2 минуты от метро.</p>
+      <div class="hero-actions">
+        <a href="#booking" class="btn">Выбрать время</a>
+        <a href="#portfolio" class="btn btn-ghost">Посмотреть работы</a>
+      </div>
+    </div>
+    <div class="hero-stage" id="heroStage">
+      <!-- ANCHOR:CAROUSEL -->
+    </div>
+  </section>
+
+  <!-- ANCHOR:ABOUT -->
+
+  <!-- ANCHOR:SERVICES -->
+
+  <!-- ANCHOR:PORTFOLIO -->
+
+  <!-- ANCHOR:MASTERS -->
+
+  <!-- ANCHOR:BOOKING -->
+</main>
+
+<footer>
+  <div class="foot-grid">
+    <div>
+      <div class="wordmark" style="font-size:1.1rem; margin-bottom:8px;">ГЛЯНЕЦ</div>
+      <div>Тверская ул., 2 · 2 мин от метро</div>
+      <div>Ежедневно 10:00–21:00</div>
+    </div>
+    <div>
+      <div>+7 (999) 123-45-67</div>
+      <div>@glyanets.nails</div>
+    </div>
+  </div>
+  <span class="demo-badge">Прототип для отклика на заказ · ГЛЯНЕЦ demo</span>
+</footer>
+
+<script>
+  const themeToggle = document.getElementById('themeToggle');
+  const root = document.documentElement;
+  themeToggle.addEventListener('click', () => {
+    const current = root.getAttribute('data-theme') ||
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    const next = current === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    themeToggle.textContent = next === 'dark' ? '☾' : '☀';
+  });
+</script>
+</body>
+</html>
