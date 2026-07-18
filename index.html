@@ -371,6 +371,43 @@
     font-size: 0.82rem;
     letter-spacing: 0.02em;
   }
+
+  /* masters + reviews */
+  .subhead { margin: 64px 0 28px; }
+  .subhead:first-child { margin-top: 0; }
+  .subhead h3 { font-size: 1.3rem; }
+
+  .masters-grid, .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 28px;
+  }
+
+  .master-card { display: flex; gap: 16px; align-items: flex-start; }
+
+  .avatar {
+    flex-shrink: 0;
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: "Bodoni MT", Georgia, serif;
+    font-size: 1.3rem;
+    color: #fdf6ee;
+    background: linear-gradient(155deg, var(--accent), var(--accent-2));
+  }
+
+  .master-card h4 { font-family: inherit; font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+  .master-card .tags { color: var(--text-dim); font-size: 0.82rem; }
+
+  .review-card {
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 26px;
+    background: var(--bg-raised);
+  }
+  .review-card .mark { font-family: "Bodoni MT", Georgia, serif; font-size: 2.4rem; color: var(--accent); line-height: 1; }
+  .review-card p { margin: 6px 0 16px; font-size: 0.95rem; }
+  .review-card .author { color: var(--text-dim); font-size: 0.82rem; letter-spacing: 0.03em; text-transform: uppercase; }
 </style>
 </head>
 <body>
@@ -561,7 +598,59 @@
     </div>
   </section>
 
-  <!-- ANCHOR:MASTERS -->
+  <section class="masters section" id="masters">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Мастера</span>
+        <h2>Три пары рук, которым доверяют разное</h2>
+      </div>
+      <div class="masters-grid">
+        <div class="master-card">
+          <div class="avatar">П</div>
+          <div>
+            <h4>Полина</h4>
+            <div class="tags">Сложный дизайн, литьё, объёмный декор</div>
+          </div>
+        </div>
+        <div class="master-card">
+          <div class="avatar">Н</div>
+          <div>
+            <h4>Настя</h4>
+            <div class="tags">Наращивание, архитектура ногтя, коррекция формы</div>
+          </div>
+        </div>
+        <div class="master-card">
+          <div class="avatar">О</div>
+          <div>
+            <h4>Оля</h4>
+            <div class="tags">Аппаратный маникюр и педикюр, проблемные кутикулы</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subhead">
+        <span class="eyebrow">Отзывы</span>
+        <h3>Своими словами</h3>
+      </div>
+      <div class="reviews-grid">
+        <div class="review-card">
+          <div class="mark">“</div>
+          <p>Первый раз маникюр держится третью неделю без единого скола — а я мою посуду руками.</p>
+          <div class="author">Марина</div>
+        </div>
+        <div class="review-card">
+          <div class="mark">“</div>
+          <p>Записалась на классику, вышла с идеей сделать литьё в следующий раз — Полина показала образцы, не навязывая.</p>
+          <div class="author">Аня</div>
+        </div>
+        <div class="review-card">
+          <div class="mark">“</div>
+          <p>Педикюр аппаратом — за 90 минут забыла, что у меня вообще были мозоли.</p>
+          <div class="author">Света</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- ANCHOR:BOOKING -->
 </main>
