@@ -206,9 +206,62 @@
     border-radius: 999px;
   }
 
+  /* hero 3D carousel */
+  .hero-stage { perspective: 1400px; }
+
+  .carousel-3d {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    transition: transform 0.35s ease-out;
+  }
+
+  .carousel-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 128px;
+    height: 210px;
+    margin: -105px 0 0 -64px;
+    transform-style: preserve-3d;
+    animation: ring-spin 26s linear infinite;
+  }
+
+  .carousel-ring.paused { animation-play-state: paused; }
+
+  @keyframes ring-spin {
+    from { transform: rotateY(0deg); }
+    to   { transform: rotateY(360deg); }
+  }
+
+  .chip {
+    position: absolute;
+    inset: 0;
+    width: 128px;
+    height: 210px;
+    border-radius: 64px 64px 16px 16px;
+    box-shadow: 0 24px 48px var(--shadow), inset 0 2px 8px rgba(255,255,255,0.45), inset 0 -14px 20px rgba(0,0,0,0.18);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 16px;
+    backface-visibility: hidden;
+  }
+
+  .chip span {
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(0,0,0,0.55);
+    background: rgba(255,255,255,0.55);
+    padding: 3px 8px;
+    border-radius: 999px;
+  }
+
   @media (max-width: 860px) {
     .hero { grid-template-columns: 1fr; padding-top: 120px; }
     .hero-stage { height: 320px; margin-top: 40px; }
+    .carousel-ring { transform: scale(0.8); }
   }
 </style>
 </head>
@@ -237,7 +290,17 @@
       </div>
     </div>
     <div class="hero-stage" id="heroStage">
-      <!-- ANCHOR:CAROUSEL -->
+      <div class="carousel-3d" id="carousel3d">
+        <div class="carousel-ring" id="carouselRing">
+          <div class="chip" style="background:linear-gradient(160deg,#f6ede2,#d8b99a); transform: rotateY(0deg) translateZ(230px);"><span>Молочный омбре</span></div>
+          <div class="chip" style="background:linear-gradient(150deg,#efe6d6,#8a7256 55%,#e7d9c4); transform: rotateY(51.4deg) translateZ(230px);"><span>Хром</span></div>
+          <div class="chip" style="background:linear-gradient(160deg,#e4d3c1,#b99b7d); transform: rotateY(102.8deg) translateZ(230px);"><span>Мрамор</span></div>
+          <div class="chip" style="background:linear-gradient(160deg,#8a2f3d,#33101a); transform: rotateY(154.2deg) translateZ(230px);"><span>Вишнёвый глянец</span></div>
+          <div class="chip" style="background:linear-gradient(160deg,#c9a789,#7a5b41); transform: rotateY(205.6deg) translateZ(230px);"><span>Кофе с молоком</span></div>
+          <div class="chip" style="background:linear-gradient(160deg,#f1e9dc,#a9814f 80%); transform: rotateY(257deg) translateZ(230px);"><span>Стекло + золото</span></div>
+          <div class="chip" style="background:linear-gradient(160deg,#dba98d,#a9684f); transform: rotateY(308.4deg) translateZ(230px);"><span>Nude rose</span></div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -277,6 +340,25 @@
     root.setAttribute('data-theme', next);
     themeToggle.textContent = next === 'dark' ? '☾' : '☀';
   });
+
+  // hero 3D parallax tilt
+  const heroStage = document.getElementById('heroStage');
+  const carousel3d = document.getElementById('carousel3d');
+  const carouselRing = document.getElementById('carouselRing');
+
+  if (heroStage && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    heroStage.addEventListener('mousemove', (e) => {
+      const rect = heroStage.getBoundingClientRect();
+      const px = (e.clientX - rect.left) / rect.width - 0.5;
+      const py = (e.clientY - rect.top) / rect.height - 0.5;
+      carousel3d.style.transform = `rotateX(${(-py * 16).toFixed(2)}deg) rotateY(${(px * 20).toFixed(2)}deg)`;
+    });
+    heroStage.addEventListener('mouseenter', () => carouselRing.classList.add('paused'));
+    heroStage.addEventListener('mouseleave', () => {
+      carouselRing.classList.remove('paused');
+      carousel3d.style.transform = 'rotateX(0deg) rotateY(0deg)';
+    });
+  }
 </script>
 </body>
 </html>
