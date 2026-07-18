@@ -491,6 +491,14 @@
 
   .step-done { align-items: flex-start; justify-content: center; }
   .step-done h3 { font-size: 1.6rem; }
+
+  /* scroll reveal */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.in-view { opacity: 1; transform: translateY(0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
 </style>
 </head>
 <body>
@@ -879,6 +887,125 @@
       card.style.transform = 'rotateX(0deg) rotateY(0deg) translateZ(0)';
     });
   });
+
+  // booking: 3-step flow with 3D flip transitions
+  (function () {
+    const stage = document.getElementById('bookingStage');
+    const steps = {};
+    stage.querySelectorAll('.step').forEach((s) => { steps[s.dataset.step] = s; });
+    const progressItems = document.querySelectorAll('#bookingProgress .p-item');
+    const state = { service: null, date: null, time: null };
+
+    const dateChips = document.getElementById('dateChips');
+    const weekdays = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
+    const today = new Date();
+    for (let i = 0; i < 5; i++) {
+      const d = new Date(today);
+      d.setDate(today.getDate() + i);
+      const label = i === 0 ? `Сегодня, ${d.getDate()}` : `${weekdays[d.getDay()]}, ${d.getDate()}`;
+      const btn = document.createElement('button');
+      btn.className = 'chip-btn';
+      btn.dataset.value = label;
+      btn.textContent = label;
+      dateChips.appendChild(btn);
+    }
+
+    document.querySelectorAll('.chip-row').forEach((row) => {
+      row.addEventListener('click', (e) => {
+        const btn = e.target.closest('.chip-btn');
+        if (!btn) return;
+        row.querySelectorAll('.chip-btn').forEach((b) => b.classList.remove('selected'));
+        btn.classList.add('selected');
+      });
+    });
+
+    function selectedValue(rowId) {
+      const sel = document.getElementById(rowId).querySelector('.chip-btn.selected');
+      return sel ? sel.dataset.value : null;
+    }
+
+    function setProgress(n) {
+      progressItems.forEach((p) => p.classList.toggle('on', Number(p.dataset.p) <= n));
+    }
+
+    function goTo(fromKey, toKey) {
+      const fromEl = steps[fromKey];
+      const toEl = steps[toKey];
+      fromEl.classList.remove('active');
+      fromEl.classList.add('exit');
+      toEl.classList.remove('exit');
+      requestAnimationFrame(() => toEl.classList.add('active'));
+      setTimeout(() => fromEl.classList.remove('exit'), 550);
+    }
+
+    document.querySelectorAll('[data-next]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const from = btn.closest('.step').dataset.step;
+        const to = btn.dataset.next;
+        const hint = document.getElementById('hint' + from);
+        if (from === '1') {
+          state.service = selectedValue('serviceChips');
+          if (!state.service) { hint.textContent = 'Выберите услугу'; return; }
+        }
+        if (from === '2') {
+          state.date = selectedValue('dateChips');
+          state.time = selectedValue('timeChips');
+          if (!state.date || !state.time) { hint.textContent = 'Выберите дату и время'; return; }
+        }
+        if (hint) hint.textContent = '';
+        setProgress(Number(to));
+        goTo(from, to);
+      });
+    });
+
+    document.querySelectorAll('[data-prev]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const from = btn.closest('.step').dataset.step;
+        const to = btn.dataset.prev;
+        setProgress(Number(to));
+        goTo(from, to);
+      });
+    });
+
+    document.getElementById('confirmBtn').addEventListener('click', () => {
+      const name = document.getElementById('fName').value.trim();
+      const phone = document.getElementById('fPhone').value.trim();
+      const hint = document.getElementById('hint3');
+      if (!name || !phone) { hint.textContent = 'Укажите имя и телефон'; return; }
+      hint.textContent = '';
+      document.getElementById('doneName').textContent = name;
+      document.getElementById('doneSummary').textContent =
+        `Ждём вас ${state.date.toLowerCase()} в ${state.time} на «${state.service}».`;
+      goTo('3', 'done');
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      document.querySelectorAll('.chip-btn.selected').forEach((b) => b.classList.remove('selected'));
+      document.getElementById('fName').value = '';
+      document.getElementById('fPhone').value = '';
+      setProgress(1);
+      goTo('done', '1');
+    });
+  })();
+
+  // scroll reveal
+  const revealTargets = document.querySelectorAll(
+    '.section-head, .spec-item, .service-card, .portfolio-card, .master-card, .review-card, .booking-card'
+  );
+  revealTargets.forEach((el) => el.classList.add('reveal'));
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    revealTargets.forEach((el) => io.observe(el));
+  } else {
+    revealTargets.forEach((el) => el.classList.add('in-view'));
+  }
 </script>
 </body>
 </html>
