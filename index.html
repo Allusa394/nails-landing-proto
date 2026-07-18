@@ -263,6 +263,71 @@
     .hero-stage { height: 320px; margin-top: 40px; }
     .carousel-ring { transform: scale(0.8); }
   }
+
+  /* shared section head */
+  .section-head { max-width: 640px; margin-bottom: 20px; }
+  .section-head h2 { font-size: clamp(2rem, 4vw, 3rem); margin-top: 14px; }
+
+  .section { padding: 100px 32px; border-top: 1px solid var(--line); }
+
+  /* about */
+  .about .container { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 60px; }
+  .spec-list { display: flex; flex-direction: column; }
+  .spec-item { padding: 22px 0; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1.1fr 2fr; gap: 24px; }
+  .spec-item:last-child { border-bottom: 1px solid var(--line); }
+  .spec-item h3 { font-size: 1.15rem; }
+  .spec-item p { color: var(--text-dim); font-size: 0.95rem; }
+
+  @media (max-width: 760px) {
+    .about .container { grid-template-columns: 1fr; }
+    .spec-item { grid-template-columns: 1fr; gap: 8px; }
+  }
+
+  /* services */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 28px;
+    margin-top: 56px;
+  }
+
+  .service-card { perspective: 1200px; height: 250px; align-self: start; }
+  .service-card:nth-child(even) { margin-top: 34px; }
+
+  .service-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .service-card:hover .service-card-inner,
+  .service-card.flipped .service-card-inner { transform: rotateY(180deg); }
+
+  .service-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 26px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: var(--bg-raised);
+  }
+
+  .service-face .price { font-family: "Bodoni MT", Georgia, serif; font-size: 1.6rem; }
+  .service-face .duration { color: var(--text-dim); font-size: 0.82rem; letter-spacing: 0.04em; }
+
+  .service-face.back {
+    transform: rotateY(180deg);
+    background: linear-gradient(160deg, var(--accent), var(--accent-2));
+    color: #fdf6ee;
+    border-color: transparent;
+  }
+  .service-face.back p { font-size: 0.92rem; line-height: 1.55; }
 </style>
 </head>
 <body>
@@ -304,9 +369,113 @@
     </div>
   </section>
 
-  <!-- ANCHOR:ABOUT -->
+  <section class="about section" id="about">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Почему сюда</span>
+        <h2>То, что не видно на фото</h2>
+      </div>
+      <div class="spec-list">
+        <div class="spec-item">
+          <h3>Автоклав вместо салфетки</h3>
+          <p>Каждый инструмент — в стерилизации после гостя, а не «протёрли антисептиком и погнали».</p>
+        </div>
+        <div class="spec-item">
+          <h3>75 минут, а не 40</h3>
+          <p>Не экономим на времени: аккуратная работа с кутикулой и покрытием требует именно столько — засекайте.</p>
+        </div>
+        <div class="spec-item">
+          <h3>Один гость за раз</h3>
+          <p>Мастер не ведёт двух клиенток одновременно ради потока. Ваше время в кресле — только ваше.</p>
+        </div>
+        <div class="spec-item">
+          <h3>Составы без резкого запаха</h3>
+          <p>Работаем на гель-лаках OPI и Gelish, а не на безымянных банках — и это чувствуется уже на первой минуте.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <!-- ANCHOR:SERVICES -->
+  <section class="services section" id="services">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Услуги</span>
+        <h2>Сколько это стоит и сколько занимает</h2>
+      </div>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-card-inner">
+            <div class="service-face front">
+              <div>
+                <h3>Классический маникюр</h3>
+                <div class="duration">45 минут</div>
+              </div>
+              <div class="price">1 800 ₽</div>
+            </div>
+            <div class="service-face back">
+              <p>Обрезной или аппаратный — на выбор. Без покрытия, форма и полировка под ваш ноготь, не под шаблон.</p>
+            </div>
+          </div>
+        </div>
+        <div class="service-card">
+          <div class="service-card-inner">
+            <div class="service-face front">
+              <div>
+                <h3>Маникюр + гель-лак</h3>
+                <div class="duration">75 минут</div>
+              </div>
+              <div class="price">2 900 ₽</div>
+            </div>
+            <div class="service-face back">
+              <p>OPI и Gelish, держится 3–4 недели. В стоимость входит один однотонный цвет из палитры.</p>
+            </div>
+          </div>
+        </div>
+        <div class="service-card">
+          <div class="service-card-inner">
+            <div class="service-face front">
+              <div>
+                <h3>Наращивание</h3>
+                <div class="duration">120 минут</div>
+              </div>
+              <div class="price">4 200 ₽</div>
+            </div>
+            <div class="service-face back">
+              <p>Гель на формах, любая длина и архитектура. Настя подберёт форму под ваши руки, а не «как на референсе».</p>
+            </div>
+          </div>
+        </div>
+        <div class="service-card">
+          <div class="service-card-inner">
+            <div class="service-face front">
+              <div>
+                <h3>Дизайн</h3>
+                <div class="duration">от 150 ₽/ноготь</div>
+              </div>
+              <div class="price">по факту</div>
+            </div>
+            <div class="service-face back">
+              <p>Втирка, слайдер, стразы, литьё. Цена — за сложность конкретного ноготка, не за весь маникюр разом.</p>
+            </div>
+          </div>
+        </div>
+        <div class="service-card">
+          <div class="service-card-inner">
+            <div class="service-face front">
+              <div>
+                <h3>Педикюр аппаратный</h3>
+                <div class="duration">90 минут</div>
+              </div>
+              <div class="price">3 400 ₽</div>
+            </div>
+            <div class="service-face back">
+              <p>С покрытием гель-лак. Отдельно — работа с загрубевшей кожей и мозолями, без лишних вопросов.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- ANCHOR:PORTFOLIO -->
 
@@ -359,6 +528,11 @@
       carousel3d.style.transform = 'rotateX(0deg) rotateY(0deg)';
     });
   }
+
+  // tap-to-flip for touch devices (hover doesn't exist there)
+  document.querySelectorAll('.service-card').forEach((card) => {
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+  });
 </script>
 </body>
 </html>
