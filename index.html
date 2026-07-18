@@ -408,6 +408,89 @@
   .review-card .mark { font-family: "Bodoni MT", Georgia, serif; font-size: 2.4rem; color: var(--accent); line-height: 1; }
   .review-card p { margin: 6px 0 16px; font-size: 0.95rem; }
   .review-card .author { color: var(--text-dim); font-size: 0.82rem; letter-spacing: 0.03em; text-transform: uppercase; }
+
+  /* booking */
+  .booking-card { max-width: 620px; margin: 56px auto 0; }
+
+  .booking-progress {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 28px;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  .booking-progress .p-item { display: flex; align-items: center; gap: 8px; }
+  .booking-progress .p-item.on { color: var(--accent); }
+  .booking-progress .p-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: currentColor;
+  }
+
+  .booking-stage {
+    position: relative;
+    min-height: 420px;
+    perspective: 1600px;
+  }
+
+  .step {
+    position: absolute;
+    inset: 0;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 32px;
+    background: var(--bg-raised);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    backface-visibility: hidden;
+    transform: rotateY(90deg);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.5s ease, opacity 0.4s ease;
+  }
+  .step.active { transform: rotateY(0deg); opacity: 1; pointer-events: auto; }
+  .step.exit { transform: rotateY(-90deg); opacity: 0; }
+
+  .step h3 { font-size: 1.2rem; }
+
+  .chip-row { display: flex; flex-wrap: wrap; gap: 10px; }
+
+  .chip-btn {
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--text);
+    padding: 10px 16px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .chip-btn.selected {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  .step-actions { margin-top: auto; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .hint { font-size: 0.8rem; color: var(--accent-2); min-height: 1.2em; }
+
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label { font-size: 0.8rem; color: var(--text-dim); letter-spacing: 0.03em; }
+  .field input, .field textarea {
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--text);
+    padding: 12px 14px;
+    border-radius: 2px;
+    font-family: inherit;
+    font-size: 0.95rem;
+  }
+  .field textarea { resize: vertical; min-height: 64px; }
+
+  .step-done { align-items: flex-start; justify-content: center; }
+  .step-done h3 { font-size: 1.6rem; }
 </style>
 </head>
 <body>
@@ -652,7 +735,82 @@
     </div>
   </section>
 
-  <!-- ANCHOR:BOOKING -->
+  <section class="booking section" id="booking">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Запись</span>
+        <h2>Три шага — и время в календаре</h2>
+      </div>
+
+      <div class="booking-card">
+        <div class="booking-progress" id="bookingProgress">
+          <span class="p-item on" data-p="1"><span class="p-dot"></span>Услуга</span>
+          <span class="p-item" data-p="2"><span class="p-dot"></span>Время</span>
+          <span class="p-item" data-p="3"><span class="p-dot"></span>Контакты</span>
+        </div>
+
+        <div class="booking-stage" id="bookingStage">
+          <div class="step active" data-step="1">
+            <h3>Какую услугу вы выбираете?</h3>
+            <div class="chip-row" id="serviceChips">
+              <button class="chip-btn" data-value="Классический маникюр">Классический маникюр</button>
+              <button class="chip-btn" data-value="Маникюр + гель-лак">Маникюр + гель-лак</button>
+              <button class="chip-btn" data-value="Наращивание">Наращивание</button>
+              <button class="chip-btn" data-value="Дизайн">Дизайн</button>
+              <button class="chip-btn" data-value="Педикюр аппаратный">Педикюр аппаратный</button>
+            </div>
+            <div class="step-actions">
+              <span class="hint" id="hint1"></span>
+              <button class="btn" data-next="2">Далее</button>
+            </div>
+          </div>
+
+          <div class="step" data-step="2">
+            <h3>Когда вам удобно?</h3>
+            <div class="chip-row" id="dateChips"></div>
+            <div class="chip-row" id="timeChips">
+              <button class="chip-btn" data-value="10:00">10:00</button>
+              <button class="chip-btn" data-value="11:30">11:30</button>
+              <button class="chip-btn" data-value="13:00">13:00</button>
+              <button class="chip-btn" data-value="14:30">14:30</button>
+              <button class="chip-btn" data-value="16:00">16:00</button>
+              <button class="chip-btn" data-value="17:30">17:30</button>
+              <button class="chip-btn" data-value="19:00">19:00</button>
+            </div>
+            <div class="step-actions">
+              <button class="btn btn-ghost" data-prev="1">Назад</button>
+              <span class="hint" id="hint2"></span>
+              <button class="btn" data-next="3">Далее</button>
+            </div>
+          </div>
+
+          <div class="step" data-step="3">
+            <h3>Как с вами связаться?</h3>
+            <div class="field">
+              <label for="fName">Имя</label>
+              <input type="text" id="fName" placeholder="Как к вам обращаться">
+            </div>
+            <div class="field">
+              <label for="fPhone">Телефон</label>
+              <input type="tel" id="fPhone" placeholder="+7 ...">
+            </div>
+            <div class="step-actions">
+              <button class="btn btn-ghost" data-prev="2">Назад</button>
+              <span class="hint" id="hint3"></span>
+              <button class="btn" id="confirmBtn">Записаться</button>
+            </div>
+          </div>
+
+          <div class="step step-done" data-step="done">
+            <h3>Готово, <span id="doneName">гость</span>!</h3>
+            <p id="doneSummary"></p>
+            <p style="color:var(--text-dim); font-size:0.9rem;">Мы позвоним для подтверждения в течение 15 минут.</p>
+            <button class="btn btn-ghost" id="resetBtn">Записаться ещё раз</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </main>
 
 <footer>
