@@ -1314,6 +1314,11 @@
       const phone = document.getElementById('fPhone').value.trim();
       const hint = document.getElementById('hint3');
       if (!name || !phone) { hint.textContent = 'Укажите имя и телефон'; return; }
+      const digits = phone.replace(/\D/g, '');
+      if (digits.length < 10 || digits.length > 11 || /[^\d\s()+-]/.test(phone)) {
+        hint.textContent = 'Телефон в формате +7 900 000-00-00';
+        return;
+      }
       hint.textContent = '';
       document.getElementById('doneName').textContent = name;
       document.getElementById('doneSummary').textContent =
