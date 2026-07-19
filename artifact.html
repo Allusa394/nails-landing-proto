@@ -148,11 +148,23 @@
     position: relative;
   }
 
-  .hero-copy h1 {
-    font-size: clamp(3rem, 7vw, 5.6rem);
-    line-height: 0.98;
-    margin: 18px 0 26px;
-    max-width: 11ch;
+  .hero-brand {
+    font-size: clamp(4.4rem, 12vw, 8.8rem);
+    line-height: 0.86;
+    letter-spacing: 0.01em;
+    margin: 16px 0 4px;
+    color: #6d2331;
+  }
+
+  .hero-tagline {
+    font-family: "Bodoni MT", "Didot", "Big Caslon", Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.25rem, 2.3vw, 1.7rem);
+    line-height: 1.2;
+    max-width: 24ch;
+    margin: 0 0 22px;
+    color: #170f0c;
   }
 
   .hero-copy p {
@@ -180,7 +192,6 @@
   }
 
   .hero .eyebrow { color: var(--wine); }
-  .hero-copy h1 { color: #170f0c; }
   .hero-copy p { color: #5a4a3d; }
   .hero .btn-ghost { color: #170f0c; border-color: rgba(23,15,12,0.3); }
 
@@ -653,7 +664,8 @@
     </div>
     <div class="hero-copy">
       <span class="eyebrow">Студия маникюра · Тверская</span>
-      <h1>Маникюр такой, что руки хочется держать напоказ</h1>
+      <h1 class="hero-brand">ГЛЯНЕЦ</h1>
+      <div class="hero-tagline">Маникюр такой, что руки хочется держать напоказ</div>
       <p>Гель-лак, наращивание и дизайн любой сложности. Один мастер — один гость: без очереди, без спешки, 2 минуты от метро.</p>
       <div class="hero-actions">
         <a href="#booking" class="btn">Выбрать время</a>
