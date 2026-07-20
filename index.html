@@ -422,7 +422,24 @@
     justify-content: center;
     padding-bottom: 16px;
     backface-visibility: hidden;
+    transform-style: preserve-3d;
   }
+
+  /* fake side "spine" so the chip reads as a solid object instead of a
+     hairline when the rotating ring turns it edge-on to the viewer */
+  .chip::before,
+  .chip::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 22px;
+    height: 100%;
+    background: inherit;
+    filter: brightness(0.62);
+    backface-visibility: hidden;
+  }
+  .chip::before { left: 0; transform-origin: left center; transform: rotateY(-90deg); }
+  .chip::after { right: 0; transform-origin: right center; transform: rotateY(90deg); }
 
   .chip span {
     font-size: 0.62rem;
