@@ -827,15 +827,7 @@
     </div>
     <div class="hero-stage" id="heroStage">
       <div class="carousel-3d" id="carousel3d">
-        <div class="carousel-ring" id="carouselRing">
-          <div class="chip" style="background:linear-gradient(160deg,#f6ede2,#d8b99a); transform: rotateY(0deg) translateZ(230px);"><span>Молочный омбре</span></div>
-          <div class="chip" style="background:linear-gradient(150deg,#efe6d6,#8a7256 55%,#e7d9c4); transform: rotateY(51.4deg) translateZ(230px);"><span>Хром</span></div>
-          <div class="chip" style="background:linear-gradient(160deg,#e4d3c1,#b99b7d); transform: rotateY(102.8deg) translateZ(230px);"><span>Мрамор</span></div>
-          <div class="chip" style="background:linear-gradient(160deg,#8a2f3d,#33101a); transform: rotateY(154.2deg) translateZ(230px);"><span>Вишнёвый глянец</span></div>
-          <div class="chip" style="background:linear-gradient(160deg,#c9a789,#7a5b41); transform: rotateY(205.6deg) translateZ(230px);"><span>Кофе с молоком</span></div>
-          <div class="chip" style="background:linear-gradient(160deg,#f1e9dc,#a9814f 80%); transform: rotateY(257deg) translateZ(230px);"><span>Стекло + золото</span></div>
-          <div class="chip" style="background:linear-gradient(160deg,#dba98d,#a9684f); transform: rotateY(308.4deg) translateZ(230px);"><span>Nude rose</span></div>
-        </div>
+        <div class="carousel-ring" id="carouselRing"></div>
       </div>
     </div>
   </section>
@@ -1014,14 +1006,7 @@
         </div>
         <div class="field-group">
           <h4>Покрытие</h4>
-          <div class="swatch-picker" id="colorPicker">
-            <button class="swatch-btn selected" data-name="Nude rose" style="background:linear-gradient(160deg,#dba98d,#a9684f);"></button>
-            <button class="swatch-btn" data-name="Молочный омбре" style="background:linear-gradient(165deg,#f6ede2,#d8b99a 70%);"></button>
-            <button class="swatch-btn" data-name="Хром «жидкий металл»" style="background:conic-gradient(from 200deg, #efe6d6, #8a7256, #cbb89a, #efe6d6);"></button>
-            <button class="swatch-btn" data-name="Вишнёвый глянец" style="background:linear-gradient(165deg,#8a2f3d,#2c0d13 75%);"></button>
-            <button class="swatch-btn" data-name="Кофе с молоком" style="background:linear-gradient(155deg,#c9a789,#7a5b41);"></button>
-            <button class="swatch-btn" data-name="Стекло с золотой нитью" style="background:linear-gradient(155deg,#f1e9dc,#a9814f 80%);"></button>
-          </div>
+          <div class="swatch-picker" id="colorPicker"></div>
         </div>
         <p class="design-summary">Выбрано: <strong id="summaryShape">миндаль</strong>, <strong id="summaryColor">nude rose</strong></p>
         <div class="hero-actions" style="margin-top:22px;">
@@ -1209,6 +1194,33 @@
 </div>
 
 <script>
+  // единый источник цветов лака — вместо двух вручную синхронизируемых
+  // списков (hero-карусель + свотчи конструктора)
+  const LACQUER_PALETTE = [
+    { name: 'Молочный омбре', hero: 'linear-gradient(160deg,#f6ede2,#d8b99a)', swatch: 'linear-gradient(165deg,#f6ede2,#d8b99a 70%)' },
+    { name: 'Хром', constructorName: 'Хром «жидкий металл»', hero: 'linear-gradient(150deg,#efe6d6,#8a7256 55%,#e7d9c4)', swatch: 'conic-gradient(from 200deg, #efe6d6, #8a7256, #cbb89a, #efe6d6)' },
+    { name: 'Мрамор', hero: 'linear-gradient(160deg,#e4d3c1,#b99b7d)' },
+    { name: 'Вишнёвый глянец', hero: 'linear-gradient(160deg,#8a2f3d,#33101a)', swatch: 'linear-gradient(165deg,#8a2f3d,#2c0d13 75%)' },
+    { name: 'Кофе с молоком', hero: 'linear-gradient(160deg,#c9a789,#7a5b41)', swatch: 'linear-gradient(155deg,#c9a789,#7a5b41)' },
+    { name: 'Стекло + золото', constructorName: 'Стекло с золотой нитью', hero: 'linear-gradient(160deg,#f1e9dc,#a9814f 80%)', swatch: 'linear-gradient(155deg,#f1e9dc,#a9814f 80%)' },
+    { name: 'Nude rose', hero: 'linear-gradient(160deg,#dba98d,#a9684f)', swatch: 'linear-gradient(160deg,#dba98d,#a9684f)', constructorDefault: true },
+  ];
+
+  (function renderPalette() {
+    const heroColors = LACQUER_PALETTE.filter((c) => c.hero);
+    const ring = document.getElementById('carouselRing');
+    const step = 360 / heroColors.length;
+    ring.innerHTML = heroColors.map((c, i) =>
+      `<div class="chip" style="background:${c.hero}; transform: rotateY(${(i * step).toFixed(1)}deg) translateZ(230px);"><span>${c.name}</span></div>`
+    ).join('');
+
+    const constructorColors = LACQUER_PALETTE.filter((c) => c.swatch);
+    const picker = document.getElementById('colorPicker');
+    picker.innerHTML = constructorColors.map((c) =>
+      `<button class="swatch-btn${c.constructorDefault ? ' selected' : ''}" data-name="${c.constructorName || c.name}" style="background:${c.swatch};"></button>`
+    ).join('');
+  })();
+
   const themeToggle = document.getElementById('themeToggle');
   const root = document.documentElement;
   themeToggle.addEventListener('click', () => {
