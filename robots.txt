@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://allusa394.github.io/nails-landing-proto/sitemap.xml
