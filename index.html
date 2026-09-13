@@ -106,6 +106,21 @@
     justify-content: space-between;
     padding: 22px 32px;
     background: linear-gradient(to bottom, var(--bg) 40%, transparent);
+    transition: background 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease;
+  }
+  /* На первом экране шапка полупрозрачная, дальше — плотная подложка,
+     иначе контент проезжает прямо сквозь пункты меню. */
+  .site-header.is-scrolled {
+    background: var(--bg);
+    box-shadow: 0 1px 0 var(--line), 0 18px 30px -28px var(--shadow);
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+  @supports (backdrop-filter: blur(12px)) {
+    .site-header.is-scrolled {
+      background: color-mix(in srgb, var(--bg) 90%, transparent);
+      backdrop-filter: blur(12px);
+    }
   }
 
   .wordmark {
@@ -496,6 +511,7 @@
       gap: 12px;
       padding: 16px 20px;
     }
+    .site-header.is-scrolled { padding: 12px 20px; }
     .site-header > .wordmark { align-self: flex-start; }
     .site-header nav {
       width: 100%;
@@ -1466,6 +1482,22 @@
         fan.style.transform = 'rotateX(0deg) rotateY(0deg)';
       });
     }
+  })();
+
+  // Плотный фон шапки, как только страница ушла вниз от самого верха.
+  // Через IntersectionObserver, а не слушатель скролла — он не дёргает вёрстку.
+  (function () {
+    const header = document.querySelector('.site-header');
+    if (!header) return;
+    if (!('IntersectionObserver' in window)) { header.classList.add('is-scrolled'); return; }
+    const sentinel = document.createElement('div');
+    sentinel.setAttribute('aria-hidden', 'true');
+    sentinel.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:1px;pointer-events:none;';
+    document.body.prepend(sentinel);
+    new IntersectionObserver(
+      ([entry]) => header.classList.toggle('is-scrolled', !entry.isIntersecting),
+      { threshold: 0 }
+    ).observe(sentinel);
   })();
 
   // scroll reveal
