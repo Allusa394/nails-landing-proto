@@ -583,7 +583,20 @@
     margin-top: 56px;
   }
 
-  .portfolio-card.tall { grid-row: span 2; }
+  .portfolio-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    min-height: 0;
+  }
+  .portfolio-item.tall { grid-row: span 2; }
+  .portfolio-item .portfolio-card { flex: 1; min-height: 0; }
+  .portfolio-caption {
+    font-size: 0.82rem;
+    letter-spacing: 0.02em;
+    color: var(--text-dim);
+  }
 
   .portfolio-card {
     position: relative;
@@ -616,15 +629,6 @@
     pointer-events: none;
   }
 
-  .portfolio-card .label {
-    position: absolute;
-    left: 0; right: 0; bottom: 0;
-    padding: 16px 18px;
-    background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
-    color: #fdf6ee;
-    font-size: 0.82rem;
-    letter-spacing: 0.02em;
-  }
 
   /* masters + reviews */
   .subhead { margin: 64px 0 28px; }
@@ -978,54 +982,66 @@
         <h2>Шесть покрытий, которые чаще всего просят повторить</h2>
       </div>
       <div class="portfolio-grid" id="portfolioGrid">
-        <div class="portfolio-card tall">
+        <figure class="portfolio-item tall">
+          <div class="portfolio-card">
           <picture>
             <source srcset="img/work-milk.webp" type="image/webp">
             <img class="ph" src="img/work-milk.jpg" alt="Молочный нюд — квадратная форма, гель-лак" loading="lazy">
           </picture>
           <div class="shine"></div>
-          <div class="label">Молочный нюд</div>
-        </div>
-        <div class="portfolio-card">
+          </div>
+          <figcaption class="portfolio-caption">Молочный нюд</figcaption>
+        </figure>
+        <figure class="portfolio-item">
+          <div class="portfolio-card">
           <picture>
             <source srcset="img/work-silver.webp" type="image/webp">
             <img class="ph" src="img/work-silver.jpg" alt="Серебряная втирка с дымчато-серым" loading="lazy">
           </picture>
           <div class="shine"></div>
-          <div class="label">Серебряная втирка</div>
-        </div>
-        <div class="portfolio-card">
+          </div>
+          <figcaption class="portfolio-caption">Серебряная втирка</figcaption>
+        </figure>
+        <figure class="portfolio-item">
+          <div class="portfolio-card">
           <picture>
             <source srcset="img/work-caramel.webp" type="image/webp">
             <img class="ph" src="img/work-caramel.jpg" alt="Карамельный глянец — работа мастера" loading="lazy">
           </picture>
           <div class="shine"></div>
-          <div class="label">Карамельный глянец</div>
-        </div>
-        <div class="portfolio-card tall">
+          </div>
+          <figcaption class="portfolio-caption">Карамельный глянец</figcaption>
+        </figure>
+        <figure class="portfolio-item tall">
+          <div class="portfolio-card">
           <picture>
             <source srcset="img/work-cherry.webp" type="image/webp">
             <img class="ph" src="img/work-cherry.jpg" alt="Вишнёвый глянец с мерцающим акцентом" loading="lazy">
           </picture>
           <div class="shine"></div>
-          <div class="label">Вишнёвый глянец</div>
-        </div>
-        <div class="portfolio-card">
+          </div>
+          <figcaption class="portfolio-caption">Вишнёвый глянец</figcaption>
+        </figure>
+        <figure class="portfolio-item">
+          <div class="portfolio-card">
           <picture>
             <source srcset="img/work-beige.webp" type="image/webp">
             <img class="ph" src="img/work-beige.jpg" alt="Тёплый беж — классический нюд" loading="lazy">
           </picture>
           <div class="shine"></div>
-          <div class="label">Тёплый беж</div>
-        </div>
-        <div class="portfolio-card">
+          </div>
+          <figcaption class="portfolio-caption">Тёплый беж</figcaption>
+        </figure>
+        <figure class="portfolio-item">
+          <div class="portfolio-card">
           <picture>
             <source srcset="img/work-gold.webp" type="image/webp">
             <img class="ph" src="img/work-gold.jpg" alt="Чёрный глянец с золотой искрой" loading="lazy">
           </picture>
           <div class="shine"></div>
-          <div class="label">Чёрный глянец, золотая искра</div>
-        </div>
+          </div>
+          <figcaption class="portfolio-caption">Чёрный глянец, золотая искра</figcaption>
+        </figure>
       </div>
     </div>
   </section>
@@ -1502,7 +1518,7 @@
 
   // scroll reveal
   const revealTargets = document.querySelectorAll(
-    '.section-head, .spec-item, .service-card, .portfolio-card, .master-card, .review-card, .booking-card, .constructor-controls, .preview-stage'
+    '.section-head, .spec-item, .service-card, .portfolio-item, .master-card, .review-card, .booking-card, .constructor-controls, .preview-stage'
   );
   revealTargets.forEach((el) => el.classList.add('reveal'));
   if ('IntersectionObserver' in window) {
